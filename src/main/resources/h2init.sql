@@ -1,0 +1,1 @@
+-- INSERT INTO nota_fiscal (numNF, dateNF, valor) VALUES (0001, '2024-10-01', 100.00)

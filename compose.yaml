@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  app:
+    image: alpe
+    container_name: alpe_container
+    ports:
+      - "8085:8085"
