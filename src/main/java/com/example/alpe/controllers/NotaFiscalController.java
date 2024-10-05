@@ -20,6 +20,6 @@ public interface NotaFiscalController {
     public ResponseEntity<Object> getNotaFiscalById(@PathVariable(value = "id") Long id);
 
     @PostMapping(path = "/nota-fiscal")
-    ResponseEntity<Object> saveNotaFiscal(@RequestBody @Valid NotaFiscalDto notaFiscal);
+    ResponseEntity<Object> receiveNotaFiscal(@RequestBody @Valid NotaFiscalDto notaFiscal);
 
 }

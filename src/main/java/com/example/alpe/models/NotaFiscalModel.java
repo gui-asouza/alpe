@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table(name = "NOTA_FISCAL")
 public class NotaFiscalModel implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -19,10 +21,26 @@ public class NotaFiscalModel implements Serializable {
     private Long numNF;
 
     @Column(name = "`dateNF`", nullable = false)
-    private BigDecimal dateNF;
+    private Date dateNF;
 
     @Column(name = "`valor`", nullable = false)
     private BigDecimal valor;
+
+    @Column(name = "`nomeEmpresa`", nullable = false)
+    private String nomeEmpresa;
+
+    @Column(name = "`docEmpresa`", nullable = false)
+    private String docEmpresa;
+
+    @Column(name = "`nomeCliente`", nullable = false)
+    private String nomeCliente;
+
+    @Column(name = "`docCliente`", nullable = false)
+    private String docCliente;
+
+    @OneToOne
+    @JoinColumn(name = "boleto_model_id", nullable = true)
+    private BoletoModel boletoModel;
 
     public Long getId() {
         return id;
@@ -40,11 +58,11 @@ public class NotaFiscalModel implements Serializable {
         this.numNF = numNF;
     }
 
-    public BigDecimal getDateNF() {
+    public Date getDateNF() {
         return dateNF;
     }
 
-    public void setDateNF(BigDecimal dateNF) {
+    public void setDateNF(Date dateNF) {
         this.dateNF = dateNF;
     }
 
@@ -56,6 +74,46 @@ public class NotaFiscalModel implements Serializable {
         this.valor = valor;
     }
 
+    public String getNomeEmpresa() {
+        return nomeEmpresa;
+    }
+
+    public void setNomeEmpresa(String nomeEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
+    }
+
+    public String getDocEmpresa() {
+        return docEmpresa;
+    }
+
+    public void setDocEmpresa(String docEmpresa) {
+        this.docEmpresa = docEmpresa;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
+
+    public String getDocCliente() {
+        return docCliente;
+    }
+
+    public void setDocCliente(String docCliente) {
+        this.docCliente = docCliente;
+    }
+
+    public BoletoModel getBoletoModel() {
+        return boletoModel;
+    }
+
+    public void setBoletoModel(BoletoModel boletoModel) {
+        this.boletoModel = boletoModel;
+    }
+
     @Override
     public String toString() {
         return "NotaFiscalModel{" +
@@ -63,6 +121,11 @@ public class NotaFiscalModel implements Serializable {
                 ", numNF=" + numNF +
                 ", dateNF=" + dateNF +
                 ", valor=" + valor +
+                ", nomeEmpresa='" + nomeEmpresa + '\'' +
+                ", docEmpresa='" + docEmpresa + '\'' +
+                ", nomeCliente='" + nomeCliente + '\'' +
+                ", docCliente='" + docCliente + '\'' +
+                ", boletoModel=" + boletoModel +
                 '}';
     }
 }
