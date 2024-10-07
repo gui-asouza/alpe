@@ -14,12 +14,15 @@ import java.util.List;
 public interface NotaFiscalController {
 
     @GetMapping("/nota-fiscal")
-    public ResponseEntity<List<NotaFiscalModel>> getAllNotaFiscal();
+    ResponseEntity<List<NotaFiscalModel>> getAllNotaFiscal();
 
     @GetMapping("/nota-fiscal/id")
-    public ResponseEntity<Object> getNotaFiscalById(@PathVariable(value = "id") Long id);
+    ResponseEntity<Object> getNotaFiscalById(@PathVariable(value = "id") Long id);
 
     @PostMapping(path = "/nota-fiscal")
     ResponseEntity<Object> receiveNotaFiscal(@RequestBody @Valid NotaFiscalDto notaFiscal);
+
+    @GetMapping(path = "/consult-nota-fiscal")
+    ResponseEntity<Object> consultNotaFiscal();
 
 }

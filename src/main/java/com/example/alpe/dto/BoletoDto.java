@@ -41,59 +41,59 @@ public class BoletoDto {
         this.id = id;
     }
 
-    public Long getNumIdentBoleto() {
+    public @NotNull Long getNumIdentBoleto() {
         return numIdentBoleto;
     }
 
-    public void setNumIdentBoleto(Long numIdentBoleto) {
+    public void setNumIdentBoleto(@NotNull Long numIdentBoleto) {
         this.numIdentBoleto = numIdentBoleto;
     }
 
-    public Date getDataVencimento() {
+    public @NotNull Date getDataVencimento() {
         return dataVencimento;
     }
 
-    public void setDataVencimento(Date dataVencimento) {
+    public void setDataVencimento(@NotNull Date dataVencimento) {
         this.dataVencimento = dataVencimento;
     }
 
-    public BigDecimal getValorBoleto() {
+    public @NotNull BigDecimal getValorBoleto() {
         return valorBoleto;
     }
 
-    public void setValorBoleto(BigDecimal valorBoleto) {
+    public void setValorBoleto(@NotNull BigDecimal valorBoleto) {
         this.valorBoleto = valorBoleto;
     }
 
-    public String getNomePagador() {
+    public @NotNull String getNomePagador() {
         return nomePagador;
     }
 
-    public void setNomePagador(String nomePagador) {
+    public void setNomePagador(@NotNull String nomePagador) {
         this.nomePagador = nomePagador;
     }
 
-    public String getDocPagador() {
+    public @NotNull String getDocPagador() {
         return docPagador;
     }
 
-    public void setDocPagador(String docPagador) {
+    public void setDocPagador(@NotNull String docPagador) {
         this.docPagador = docPagador;
     }
 
-    public String getNomeBeneficiario() {
+    public @NotNull String getNomeBeneficiario() {
         return nomeBeneficiario;
     }
 
-    public void setNomeBeneficiario(String nomeBeneficiario) {
+    public void setNomeBeneficiario(@NotNull String nomeBeneficiario) {
         this.nomeBeneficiario = nomeBeneficiario;
     }
 
-    public String getDocBeneficiario() {
+    public @NotNull String getDocBeneficiario() {
         return docBeneficiario;
     }
 
-    public void setDocBeneficiario(String docBeneficiario) {
+    public void setDocBeneficiario(@NotNull String docBeneficiario) {
         this.docBeneficiario = docBeneficiario;
     }
 

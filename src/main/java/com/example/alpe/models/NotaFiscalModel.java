@@ -38,6 +38,12 @@ public class NotaFiscalModel implements Serializable {
     @Column(name = "`docCliente`", nullable = false)
     private String docCliente;
 
+    @Column(name = "`chave`", unique = true, nullable = false)
+    private String chave;
+
+    @Column(name = "`status`")
+    private String status;
+
     @OneToOne
     @JoinColumn(name = "boleto_model_id", nullable = true)
     private BoletoModel boletoModel;
@@ -104,6 +110,22 @@ public class NotaFiscalModel implements Serializable {
 
     public void setDocCliente(String docCliente) {
         this.docCliente = docCliente;
+    }
+
+    public String getChave() {
+        return chave;
+    }
+
+    public void setChave(String chave) {
+        this.chave = chave;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public BoletoModel getBoletoModel() {

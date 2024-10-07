@@ -1,7 +1,6 @@
 package com.example.alpe.dto;
 
 import com.example.alpe.models.BoletoModel;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
@@ -32,6 +31,11 @@ public class NotaFiscalDto {
     @NotNull
     private String docCliente;
 
+    @NotNull
+    private String chave;
+
+    private String status;
+
     private BoletoModel boletoModel;
 
     public NotaFiscalDto() {
@@ -45,60 +49,76 @@ public class NotaFiscalDto {
         this.id = id;
     }
 
-    public Long getNumNF() {
+    public @NotNull Long getNumNF() {
         return numNF;
     }
 
-    public void setNumNF(Long numNF) {
+    public void setNumNF(@NotNull Long numNF) {
         this.numNF = numNF;
     }
 
-    public Date getDateNF() {
+    public @NotNull Date getDateNF() {
         return dateNF;
     }
 
-    public void setDateNF(Date dateNF) {
+    public void setDateNF(@NotNull Date dateNF) {
         this.dateNF = dateNF;
     }
 
-    public BigDecimal getValor() {
+    public @NotNull BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(@NotNull BigDecimal valor) {
         this.valor = valor;
     }
 
-    public String getNomeEmpresa() {
+    public @NotNull String getNomeEmpresa() {
         return nomeEmpresa;
     }
 
-    public void setNomeEmpresa(String nomeEmpresa) {
+    public void setNomeEmpresa(@NotNull String nomeEmpresa) {
         this.nomeEmpresa = nomeEmpresa;
     }
 
-    public String getDocEmpresa() {
+    public @NotNull String getDocEmpresa() {
         return docEmpresa;
     }
 
-    public void setDocEmpresa(String docEmpresa) {
+    public void setDocEmpresa(@NotNull String docEmpresa) {
         this.docEmpresa = docEmpresa;
     }
 
-    public String getNomeCliente() {
+    public @NotNull String getNomeCliente() {
         return nomeCliente;
     }
 
-    public void setNomeCliente(String nomeCliente) {
+    public void setNomeCliente(@NotNull String nomeCliente) {
         this.nomeCliente = nomeCliente;
     }
 
-    public String getDocCliente() {
+    public @NotNull String getDocCliente() {
         return docCliente;
     }
 
-    public void setDocCliente(String docCliente) {
+    public void setDocCliente(@NotNull String docCliente) {
         this.docCliente = docCliente;
+    }
+
+    public @NotNull String getChave() {
+        return chave;
+    }
+
+    public void setChave(@NotNull String chave) {
+        this.chave = chave;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public BoletoModel getBoletoModel() {

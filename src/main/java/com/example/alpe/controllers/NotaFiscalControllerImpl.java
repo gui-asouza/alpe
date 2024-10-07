@@ -5,6 +5,7 @@ import com.example.alpe.models.BoletoModel;
 import com.example.alpe.models.NotaFiscalModel;
 import com.example.alpe.repositories.BoletoRepository;
 import com.example.alpe.repositories.NotaFiscalRepository;
+import com.example.alpe.serpro.apis.SerproApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class NotaFiscalControllerImpl implements NotaFiscalController {
     private static final Logger LOGGER = LoggerFactory.getLogger(NotaFiscalControllerImpl.class);
 
     @Autowired
+    SerproApi serproApi;
+
+    @Autowired
     NotaFiscalRepository notaFiscalRepository;
 
     @Autowired
@@ -29,7 +33,6 @@ public class NotaFiscalControllerImpl implements NotaFiscalController {
     @Override
     public ResponseEntity<List<NotaFiscalModel>> getAllNotaFiscal() {
         List<NotaFiscalModel> notaFiscalList;
-
         try {
             notaFiscalList = notaFiscalRepository.findAll();
         } catch (Exception e) {
@@ -59,7 +62,7 @@ public class NotaFiscalControllerImpl implements NotaFiscalController {
 
     @Override
     public ResponseEntity<Object> receiveNotaFiscal(NotaFiscalDto notaFiscal) {
-//        NotaFiscalModel notaFiscalModel;
+        NotaFiscalModel notaFiscalModel;
         Optional<NotaFiscalModel> notaFiscalOptional;
 
         try {
@@ -68,12 +71,12 @@ public class NotaFiscalControllerImpl implements NotaFiscalController {
 
             if (notaFiscalOptional.isPresent()) {
                 LOGGER.info("[Nota-Fiscal-Controller-Impl] - Nota Fiscal {} já importada.", notaFiscal.getNumNF());
-                return ResponseEntity.status(HttpStatus.OK).body("Nota Fiscal Já Importada!");
+                return ResponseEntity.status(HttpStatus.OK).body("Nota Fiscal já importada!");
             }
 
             // TODO: FAZER A VALIDAÇÃO DA NOTA FISCAL NO GOVERNO
 
-            NotaFiscalModel notaFiscalModel = new NotaFiscalModel();
+            notaFiscalModel = new NotaFiscalModel();
             notaFiscalModel.setNumNF(notaFiscal.getNumNF());
             notaFiscalModel.setDateNF(notaFiscal.getDateNF());
             notaFiscalModel.setValor(notaFiscal.getValor());
@@ -82,7 +85,7 @@ public class NotaFiscalControllerImpl implements NotaFiscalController {
             notaFiscalModel.setNomeCliente(notaFiscal.getNomeCliente());
             notaFiscalModel.setDocCliente(notaFiscal.getDocCliente());
 
-            LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Buscando boleto.");
+            LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Buscando boleto referente a NF {}.", notaFiscal.getNumNF());
             BoletoModel boleto = boletoRepository.findBoletoModelByDocBeneficiarioAndDocPagadorAndValorBoleto(
                     notaFiscal.getDocEmpresa(), notaFiscal.getDocCliente(), notaFiscal.getValor());
 
@@ -95,10 +98,21 @@ public class NotaFiscalControllerImpl implements NotaFiscalController {
             LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Nota fiscal {} importada com sucesso!", notaFiscalModel.getNumNF());
 
         } catch (Exception e) {
-            LOGGER.error("[NOTA-FISCAL-CONTROLLER] - Error: {}", e.getMessage());
             throw new RuntimeException(e);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body("Nota fiscal importada com sucesso!");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(String.format("Nota Fiscal %s importada com sucesso!", notaFiscalModel.getNumNF()));
+    }
+
+    @Override
+    public ResponseEntity<Object> consultNotaFiscal() {
+        try {
+            serproApi.consultaNotaFiscal("31160906347409006953550110008369841081956475");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
     }
 }
