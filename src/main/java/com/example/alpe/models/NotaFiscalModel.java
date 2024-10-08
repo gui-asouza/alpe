@@ -18,7 +18,7 @@ public class NotaFiscalModel implements Serializable {
     private Long id;
 
     @Column(name = "`numNF`", unique = true, nullable = false)
-    private Long numNF;
+    private String numNF;
 
     @Column(name = "`dateNF`", nullable = false)
     private Date dateNF;
@@ -38,15 +38,11 @@ public class NotaFiscalModel implements Serializable {
     @Column(name = "`docCliente`", nullable = false)
     private String docCliente;
 
-    @Column(name = "`chave`", unique = true, nullable = false)
+    @Column(name = "`chave`", unique = true)
     private String chave;
 
-    @Column(name = "`status`")
-    private String status;
-
-    @OneToOne
-    @JoinColumn(name = "boleto_model_id", nullable = true)
-    private BoletoModel boletoModel;
+    @Column(name = "`isValid`")
+    private Boolean isValid;
 
     public Long getId() {
         return id;
@@ -56,11 +52,11 @@ public class NotaFiscalModel implements Serializable {
         this.id = id;
     }
 
-    public Long getNumNF() {
+    public String getNumNF() {
         return numNF;
     }
 
-    public void setNumNF(Long numNF) {
+    public void setNumNF(String numNF) {
         this.numNF = numNF;
     }
 
@@ -120,25 +116,17 @@ public class NotaFiscalModel implements Serializable {
         this.chave = chave;
     }
 
-    public String getStatus() {
-        return status;
+    public Boolean getIsValid() {
+        return isValid;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public BoletoModel getBoletoModel() {
-        return boletoModel;
-    }
-
-    public void setBoletoModel(BoletoModel boletoModel) {
-        this.boletoModel = boletoModel;
+    public void setIsValid(Boolean isValid) {
+        this.isValid = isValid;
     }
 
     @Override
     public String toString() {
-        return "NotaFiscalModel{" +
+        return "{" +
                 "id=" + id +
                 ", numNF=" + numNF +
                 ", dateNF=" + dateNF +
@@ -147,7 +135,8 @@ public class NotaFiscalModel implements Serializable {
                 ", docEmpresa='" + docEmpresa + '\'' +
                 ", nomeCliente='" + nomeCliente + '\'' +
                 ", docCliente='" + docCliente + '\'' +
-                ", boletoModel=" + boletoModel +
+                ", chave='" + chave + '\'' +
+                ", isValid='" + isValid + '\'' +
                 '}';
     }
 }

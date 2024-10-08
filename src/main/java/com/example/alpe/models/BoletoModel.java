@@ -38,10 +38,6 @@ public class BoletoModel implements Serializable {
     @Column(name = "`docBeneficiario`", nullable = false)
     private String docBeneficiario;
 
-    @OneToOne
-    @JoinColumn(name = "nota_fiscal_model_id", nullable = true)
-    private NotaFiscalModel notaFiscalModel;
-
     public Long getId() {
         return id;
     }
@@ -106,17 +102,9 @@ public class BoletoModel implements Serializable {
         this.docBeneficiario = docBeneficiario;
     }
 
-    public NotaFiscalModel getNotaFiscalModel() {
-        return notaFiscalModel;
-    }
-
-    public void setNotaFiscalModel(NotaFiscalModel notaFiscalModel) {
-        this.notaFiscalModel = notaFiscalModel;
-    }
-
     @Override
     public String toString() {
-        return "BoletoModel{" +
+        return "{" +
                 "id=" + id +
                 ", numIdentBoleto=" + numIdentBoleto +
                 ", dataVencimento=" + dataVencimento +
@@ -125,7 +113,6 @@ public class BoletoModel implements Serializable {
                 ", docPagador='" + docPagador + '\'' +
                 ", nomeBeneficiario='" + nomeBeneficiario + '\'' +
                 ", docBeneficiario='" + docBeneficiario + '\'' +
-                ", notaFiscalModel=" + notaFiscalModel +
                 '}';
     }
 }

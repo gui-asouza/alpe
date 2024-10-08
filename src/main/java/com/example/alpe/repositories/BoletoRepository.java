@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface BoletoRepository extends JpaRepository<BoletoModel, Long> {
+
     Optional<BoletoModel> findBoletoModelByNumIdentBoleto(Long numIdentBoleto);
+
     BoletoModel findBoletoModelByDocBeneficiarioAndDocPagadorAndValorBoleto(String docEmpresa, String docCliente, BigDecimal valor);
 }

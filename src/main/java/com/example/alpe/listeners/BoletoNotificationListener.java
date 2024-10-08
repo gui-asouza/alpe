@@ -1,6 +1,7 @@
 package com.example.alpe.listeners;
 
 import com.example.alpe.dto.BoletoDto;
+import com.example.alpe.exceptions.BoletoException;
 import com.example.alpe.services.BoletoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,8 @@ public class BoletoNotificationListener {
     private BoletoService boletoService;
 
     @KafkaListener(topics = {"${kafka.topic.boleto.entrada}"})
-    public void entradaBoletoNotification(BoletoDto message) {
-        LOGGER.info("Recebido boleto notification: {}", message);
+    public void entradaBoletoNotification(BoletoDto message) throws BoletoException {
+        LOGGER.info("[BOLETO-NOTIFICATION] - Recebido boleto notification: {}", message);
         boletoService.entradaBoleto(message);
     }
 }

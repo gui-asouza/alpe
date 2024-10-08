@@ -1,8 +1,5 @@
 package com.example.alpe.dto;
 
-import com.example.alpe.models.BoletoModel;
-import jakarta.validation.constraints.NotNull;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,33 +7,23 @@ public class NotaFiscalDto {
 
     private Long id;
 
-    @NotNull
-    private Long numNF;
+    private String numNF;
 
-    @NotNull
     private Date dateNF;
 
-    @NotNull
     private BigDecimal valor;
 
-    @NotNull
     private String nomeEmpresa;
 
-    @NotNull
     private String docEmpresa;
 
-    @NotNull
     private String nomeCliente;
 
-    @NotNull
     private String docCliente;
 
-    @NotNull
     private String chave;
 
-    private String status;
-
-    private BoletoModel boletoModel;
+    private Boolean isValid;
 
     public NotaFiscalDto() {
     }
@@ -49,83 +36,75 @@ public class NotaFiscalDto {
         this.id = id;
     }
 
-    public @NotNull Long getNumNF() {
+    public String getNumNF() {
         return numNF;
     }
 
-    public void setNumNF(@NotNull Long numNF) {
+    public void setNumNF(String numNF) {
         this.numNF = numNF;
     }
 
-    public @NotNull Date getDateNF() {
+    public Date getDateNF() {
         return dateNF;
     }
 
-    public void setDateNF(@NotNull Date dateNF) {
+    public void setDateNF(Date dateNF) {
         this.dateNF = dateNF;
     }
 
-    public @NotNull BigDecimal getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(@NotNull BigDecimal valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
-    public @NotNull String getNomeEmpresa() {
+    public String getNomeEmpresa() {
         return nomeEmpresa;
     }
 
-    public void setNomeEmpresa(@NotNull String nomeEmpresa) {
+    public void setNomeEmpresa(String nomeEmpresa) {
         this.nomeEmpresa = nomeEmpresa;
     }
 
-    public @NotNull String getDocEmpresa() {
+    public String getDocEmpresa() {
         return docEmpresa;
     }
 
-    public void setDocEmpresa(@NotNull String docEmpresa) {
+    public void setDocEmpresa(String docEmpresa) {
         this.docEmpresa = docEmpresa;
     }
 
-    public @NotNull String getNomeCliente() {
+    public String getNomeCliente() {
         return nomeCliente;
     }
 
-    public void setNomeCliente(@NotNull String nomeCliente) {
+    public void setNomeCliente(String nomeCliente) {
         this.nomeCliente = nomeCliente;
     }
 
-    public @NotNull String getDocCliente() {
+    public String getDocCliente() {
         return docCliente;
     }
 
-    public void setDocCliente(@NotNull String docCliente) {
+    public void setDocCliente(String docCliente) {
         this.docCliente = docCliente;
     }
 
-    public @NotNull String getChave() {
+    public String getChave() {
         return chave;
     }
 
-    public void setChave(@NotNull String chave) {
+    public void setChave(String chave) {
         this.chave = chave;
     }
 
-    public String getStatus() {
-        return status;
+    public Boolean getValid() {
+        return isValid;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public BoletoModel getBoletoModel() {
-        return boletoModel;
-    }
-
-    public void setBoletoModel(BoletoModel boletoModel) {
-        this.boletoModel = boletoModel;
+    public void setValid(Boolean valid) {
+        isValid = valid;
     }
 }

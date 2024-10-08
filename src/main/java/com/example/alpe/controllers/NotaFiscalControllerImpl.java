@@ -1,9 +1,9 @@
 package com.example.alpe.controllers;
 
 import com.example.alpe.dto.NotaFiscalDto;
-import com.example.alpe.models.BoletoModel;
+import com.example.alpe.exceptions.NotaFiscalException;
+import com.example.alpe.exceptions.SerproException;
 import com.example.alpe.models.NotaFiscalModel;
-import com.example.alpe.repositories.BoletoRepository;
 import com.example.alpe.repositories.NotaFiscalRepository;
 import com.example.alpe.serpro.apis.SerproApi;
 import org.slf4j.Logger;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,54 +26,22 @@ public class NotaFiscalControllerImpl implements NotaFiscalController {
     @Autowired
     NotaFiscalRepository notaFiscalRepository;
 
-    @Autowired
-    BoletoRepository boletoRepository;
-
     @Override
-    public ResponseEntity<List<NotaFiscalModel>> getAllNotaFiscal() {
-        List<NotaFiscalModel> notaFiscalList;
-        try {
-            notaFiscalList = notaFiscalRepository.findAll();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(notaFiscalList);
-    }
-
-    @Override
-    public ResponseEntity<Object> getNotaFiscalById(Long id) {
-        Optional<NotaFiscalModel> notaFiscal;
-
-        try {
-            notaFiscal = notaFiscalRepository.findById(id);
-
-            if (notaFiscal.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nota Fiscal Not Found.");
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(notaFiscal.get());
-    }
-
-    @Override
-    public ResponseEntity<Object> receiveNotaFiscal(NotaFiscalDto notaFiscal) {
+    public ResponseEntity<Object> receiveNotaFiscal(NotaFiscalDto notaFiscal) throws NotaFiscalException {
         NotaFiscalModel notaFiscalModel;
         Optional<NotaFiscalModel> notaFiscalOptional;
 
         try {
-            LOGGER.info("[Nota-Fiscal-Controller-Impl] - Verificando se NF já foi importada.");
-            notaFiscalOptional = notaFiscalRepository.findById(notaFiscal.getNumNF());
+            LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Verificando se NF já foi importada.");
+            notaFiscalOptional = notaFiscalRepository.findNotaFiscalModelByNumNF(notaFiscal.getNumNF());
 
             if (notaFiscalOptional.isPresent()) {
-                LOGGER.info("[Nota-Fiscal-Controller-Impl] - Nota Fiscal {} já importada.", notaFiscal.getNumNF());
+                LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Nota Fiscal {} já importada.", notaFiscal.getNumNF());
                 return ResponseEntity.status(HttpStatus.OK).body("Nota Fiscal já importada!");
             }
 
-            // TODO: FAZER A VALIDAÇÃO DA NOTA FISCAL NO GOVERNO
+            LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Consultando a NF {} no Serpro.", notaFiscal.getChave());
+            String responseConsultaNF = validateNotaFiscal(notaFiscal.getChave());
 
             notaFiscalModel = new NotaFiscalModel();
             notaFiscalModel.setNumNF(notaFiscal.getNumNF());
@@ -84,35 +51,42 @@ public class NotaFiscalControllerImpl implements NotaFiscalController {
             notaFiscalModel.setDocEmpresa(notaFiscal.getDocEmpresa());
             notaFiscalModel.setNomeCliente(notaFiscal.getNomeCliente());
             notaFiscalModel.setDocCliente(notaFiscal.getDocCliente());
+            notaFiscalModel.setChave(notaFiscal.getChave());
 
-            LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Buscando boleto referente a NF {}.", notaFiscal.getNumNF());
-            BoletoModel boleto = boletoRepository.findBoletoModelByDocBeneficiarioAndDocPagadorAndValorBoleto(
-                    notaFiscal.getDocEmpresa(), notaFiscal.getDocCliente(), notaFiscal.getValor());
-
-            if (boleto != null) {
-                notaFiscalModel.setBoletoModel(boleto);
+            if (responseConsultaNF.equals("100")) {
+                notaFiscalModel.setIsValid(Boolean.TRUE);
+            } else {
+                notaFiscalModel.setIsValid(Boolean.FALSE);
             }
 
-            LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Salvando Nota Fiscal {}.", notaFiscalModel.getNumNF());
+            LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Salvando Nota Fiscal {}.", notaFiscalModel);
             notaFiscalRepository.save(notaFiscalModel);
             LOGGER.info("[NOTA-FISCAL-CONTROLLER] - Nota fiscal {} importada com sucesso!", notaFiscalModel.getNumNF());
 
+            if (!responseConsultaNF.equals("100")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Esta nota fiscal não esta valida!");
+            }
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new NotaFiscalException(e);
         }
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(String.format("Nota Fiscal %s importada com sucesso!", notaFiscalModel.getNumNF()));
     }
 
-    @Override
-    public ResponseEntity<Object> consultNotaFiscal() {
+    private String validateNotaFiscal(String numNf) throws SerproException {
+        String responseConsultaNF;
+
         try {
-            serproApi.consultaNotaFiscal("31160906347409006953550110008369841081956475");
+            serproApi.consultaStatusSerpro();
+            responseConsultaNF = serproApi.consultaNotaFiscal(numNf);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SerproException(e);
         }
 
-        return null;
+        return responseConsultaNF;
     }
+
 }
